@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <table>
+        <tr>
+            <td>用户名:</td>
+            <td><input id="name" type="text" /></td>
+        </tr>
+        <tr>
+            <td>密码:</td>
+            <td><input id="pass" type="password" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input id="Button1" type="button" value="登录" onclick="Login()" /></td>
+        </tr>
+    </table>
+
+    <script>
+        function Login() {
+            var name = $("#name").val();
+            var pass = $("#pass").val();
+            if (name == "") {
+                alert("用户名不能为空！");
+                return;
+            }
+            if (pass=="") {
+                alert("密码不能为空！");
+                return;
+            }
+            $.ajax({
+                url: 'http://localhost:57538/api/Users/Login',
+                type: 'get',
+                data: { name: name, pass: pass },
+                success: function (d) {
+                    if (d.Code == 0) {
+                        localStorage["user"] = d.Result;
+                        alert("登录成功！");
+                        location.href = "Index.html";
+                    }
+                    else {
+                        alert(d.Msg);
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>
